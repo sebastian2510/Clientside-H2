@@ -1,0 +1,91 @@
+.header {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.menu-type {
+    padding: 10px;
+    text-align: center;
+}
+.menu-item-price {
+    float: right;
+    font-weight: bold;
+    color: green;
+
+}
+
+.menu-item-name {
+    float: left;
+}
+
+.menu-item {
+    margin: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 32%;
+    border-radius: 1rem;
+    height: fit-content;
+    display: inline-block;
+    cursor: pointer;
+
+}
+
+.menu-item-buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+}
+.menu-item-add,
+.menu-item-remove {
+    float: right;
+}
+
+.menu-item-remove:hover,
+.menu-item-add:hover {
+    font-weight: bold;
+}
+
+.menu-item:hover {
+    background-color: #ddd;
+}
+
+.menu-item-description {
+    clear: both;
+    font-size: 0.8em;
+    font-style: italic;
+    color: #777;
+}
+
+#order-container { 
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    height: 10vh;
+}
+
+
+
+.order-item {
+    border-radius: 1rem;
+    cursor: pointer;
+    /* Place each item under each other with a max of 3 items */
+    display: flex;
+    height: fit-content;
+}
+
+.order-item-name {
+    float: left;
+    color: #333;
+    padding-right: 5px;
+}
+
+.order-item-price {
+    float: right;
+    font-weight: bold;
+    color: green;
+}
