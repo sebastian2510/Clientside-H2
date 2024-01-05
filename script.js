@@ -104,7 +104,6 @@ function GetRandomIndex(length) {
 }
 
 let currentOrder = [];
-let currentSum = 0;
 let totalSum = 0;
 let currentIndex = 1;
 
@@ -129,7 +128,6 @@ function DisplayMenu(menu) {
         
         menuItem.querySelector(`.menu-item-add`).addEventListener('click', () => {
             currentOrder.push(item);
-            currentSum += item.price;
             DisplayOrder(currentOrder);
         });
 
