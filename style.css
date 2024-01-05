@@ -73,6 +73,7 @@
     border-radius: 1rem;
     cursor: pointer;
     /* Place each item under each other with a max of 3 items */
+    width: 32%;
     display: flex;
     height: fit-content;
 }

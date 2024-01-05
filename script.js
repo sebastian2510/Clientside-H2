@@ -40,8 +40,6 @@ const Drinks = [
     }
 ];
 
-
-
 const Sides = [
     {
         id: 1,
@@ -136,9 +134,9 @@ function DisplayMenu(menu) {
 
         menuItem.querySelector(`.menu-item-remove`).addEventListener('click', () => {
             currentOrder = [...currentOrder.filter((orderItem) => {
-                return orderItem.id != item.id;
+                return orderItem.id != item.id || orderItem.name != item.name || orderItem.price != item.price;
             }), ...currentOrder.filter((orderItem) => {
-                return orderItem.id == item.id;
+                return orderItem.id == item.id && orderItem.name == item.name && orderItem.price == item.price;
             }).slice(1)]
             DisplayOrder(currentOrder);
         });
@@ -152,7 +150,7 @@ function DisplayOrder(order) {
     let orderItems = [];
     order.forEach((item) => {
         let orderItem = orderItems.find((orderItem) => {
-            return orderItem.id == item.id;
+            return orderItem.id == item.id && orderItem.name == item.name && orderItem.price == item.price;
         });
         if (orderItem) {
             orderItem.count++;
