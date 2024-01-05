@@ -62,12 +62,23 @@
 #order-container { 
     bottom: 0;
     position: fixed;
-    width: 80%;
+    width: 50%;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 1rem;
     height: 10vh;
-    margin-left: 10%;
+    margin-left: 25%;
+    display: grid;
+    /* Display four columns and three rows */
+    /* q: what is 1fr?
+    a: 1fr is a fraction unit. It means that the column will be 1 part of the available space.
+    q: how can i make it smaller?
+    a: yo ca use 1px, 1em, 1rem, 1% or 1vh 
+    */
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    /* Make the grid add to row before next column*/
+    grid-auto-flow: column;
 }
 
 .order-item {
@@ -91,4 +102,20 @@
     float: right;
     font-weight: bold;
     color: green;
+}
+
+.order-sum {
+    font-weight: bold;
+    color: green;
+    padding: 10px;
+    text-align: center;
+}
+
+#order-number {
+    /*Place this in the left bottom */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    font-weight: bold;
 }

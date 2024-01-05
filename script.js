@@ -105,6 +105,7 @@ function GetRandomIndex(length) {
 
 let currentOrder = [];
 let currentSum = 0;
+let totalSum = 0;
 let currentIndex = 1;
 
 function DisplayMenu(menu) {
@@ -133,6 +134,7 @@ function DisplayMenu(menu) {
         });
 
         menuItem.querySelector(`.menu-item-remove`).addEventListener('click', () => {
+            // Honestly hvad fuck er javascript
             currentOrder = [...currentOrder.filter((orderItem) => {
                 return orderItem.id != item.id || orderItem.name != item.name || orderItem.price != item.price;
             }), ...currentOrder.filter((orderItem) => {
@@ -170,6 +172,11 @@ function DisplayOrder(order) {
     });
 }
 
+function DisplayOrderNumber() 
+{
+    let orderNumber = document.getElementById('order-number');
+    orderNumber.innerHTML = `Order #${currentIndex}`;
+}
 function DisplayItems() {
     DisplayMenu(Food);
     DisplayMenu(Drinks);
@@ -195,3 +202,4 @@ function GetMenuType(menu)
 }
 
 DisplayItems();
+DisplayOrderNumber();
