@@ -55,7 +55,7 @@ const Sides = [
     },
     {
         id: 3,
-        name: 'Chili Cheese Top',
+        name: 'Chili Cheese Tops',
         price: 2,
         description: 'Hot&Spicy...',
     }
@@ -144,8 +144,7 @@ function DisplayMenu(menu) {
     });
 }
 
-function displayorder(order) 
-{
+function displayorder(order) {
     let orderContainer = document.getElementById('order-container');
     orderContainer.innerHTML = '';
     let orderItems = [];
@@ -205,13 +204,16 @@ function displayModal(order) {
     modalContent.classList.add('modal-content');
     let orderItems = [];
     order.forEach((item) => {
+        // orderItem er en bool, som er baseret på om der er et item i orderItems, som har samme id, navn og pris som det item, som vi er ved at tjekke
         let orderItem = orderItems.find((orderItem) => {
             return orderItem.id == item.id && orderItem.name == item.name && orderItem.price == item.price;
         });
+        // Hvis der er et item i orderItems, som har samme id, navn og pris som det item, som vi er ved at tjekke, så skal vi bare øge count med 1
         if (orderItem) {
             orderItem.count++;
         }
         else {
+            // Tilføj nyt item til vores array
             orderItems.push({id: item.id, name: item.name, price: item.price, count: 1});
         }
     });
@@ -250,7 +252,7 @@ function displayModal(order) {
 
     // Event listeners
     modal.querySelector('.modal-close').addEventListener('click', () => {
-        currentOrder = [];
+        // currentOrder = [];
         modal.classList.remove('show');
         displayorder(currentOrder);
     });
@@ -262,10 +264,8 @@ function displayModal(order) {
     });
 
     modal.querySelector('.modal-confirm').addEventListener('click', () => {
-        currentIndex++;
         totalSum += totalPrice(order);
         displayTotalEarnings();
-        displayorderNumber();
         modal.classList.remove('show');
         displayReceiptModal(order);
     });
@@ -322,30 +322,35 @@ function displayReceiptModal(order) {
     modal.appendChild(modalContentDiv);
     modal.classList.add('show');
     console.log("Modal shown");
-
     // Event listeners
+
     modal.querySelector('.modal-close').addEventListener('click', () => {
         currentOrder = [];
         modal.classList.remove('show');
+        currentIndex++;
+        displayorderNumber();
         displayorder(currentOrder);
     });
 
     modal.querySelector('.modal-cancel').addEventListener('click', () => {
         currentOrder = [];
         modal.classList.remove('show');
+        currentIndex++;
+        displayorderNumber();
         displayorder(currentOrder);
+        sleep(1000).then(() => {
+            alert("here\'s your order")
+        });
     });
 }
 
 
-function displayorderNumber() 
-{
+function displayorderNumber() {
     let orderNumber = document.getElementById('order-number');
     orderNumber.innerHTML = `Order #${currentIndex}`;
 }
 
-function displayTotalEarnings()
-{
+function displayTotalEarnings() {
     let totalEarnings = document.getElementById('total-earning');
     totalEarnings.innerHTML = `Total earnings: ${totalSum}$`;
 
@@ -363,8 +368,7 @@ function totalPrice(order) {
     }, 0);
 }
 
-function GetMenuType(menu) 
-{
+function GetMenuType(menu) {
     if (menu == Food) {
         return 'Main dish';
     }
@@ -383,3 +387,7 @@ function GetMenuType(menu)
 DisplayItems();
 displayorderNumber();
 displayTotalEarnings();
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

@@ -184,12 +184,15 @@
     margin: 0;
 }
 
+.modal-confirm {
+    margin-left: 5px;
+}
+
 .modal-close {
-    background: none;
     border: none;
     cursor: pointer;
     font-size: 18px;
-    color: #777;
+    color: red;
 }
 
 .modal-body {
