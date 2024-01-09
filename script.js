@@ -3,19 +3,19 @@ const Food = [
         id: 1,
         name: 'Burger',
         price: 5,
-        description: 'Tasty cheeseburger',
+        description: 'Delicious cheeseburger',
     },
     {
         id: 2,
         name: 'Pizza',
         price: 10,
-        description: 'Tasty pizza',
+        description: 'Cheesy pizza',
     },
     {
         id: 3,
         name: 'Hot Dog',
         price: 3,
-        description: 'Tasty hot dog',
+        description: 'Long, big and juicy hot dog',
     }
 ];
 
@@ -24,19 +24,19 @@ const Drinks = [
         id: 1,
         name: 'Coca Cola',
         price: 2,
-        description: 'Tasty coca cola',
+        description: 'Icy coca cola',
     },
     {
         id: 2,
         name: 'Sprite',
         price: 2,
-        description: 'Tasty sprite',
+        description: 'Icy sprite',
     },
     {
         id: 3,
         name: 'Fanta',
         price: 2,
-        description: 'Tasty fanta',
+        description: 'Icy fanta',
     }
 ];
 
@@ -45,7 +45,7 @@ const Sides = [
         id: 1,
         name: 'Fries',
         price: 2,
-        description: 'Tasty fries',
+        description: 'Salt n\' Crispy fries',
     },
     {
         id: 2,
@@ -55,30 +55,30 @@ const Sides = [
     },
     {
         id: 3,
-        name: 'Salad',
+        name: 'Chili Cheese Top',
         price: 2,
-        description: 'Tasty salad',
+        description: 'Hot&Spicy...',
     }
 ];
 
 const Desserts = [
     {
         id: 1,
-        name: 'Ice Cream',
+        name: 'McFlurry',
         price: 2,
-        description: 'Tasty ice cream',
+        description: 'Yummy McFlurry',
     },
     {
         id: 2,
         name: 'Cake',
         price: 2,
-        description: 'Tasty cake',
+        description: 'Melty chocolate right from the oven',
     },
     {
         id: 3,
         name: 'Pie',
         price: 2,
-        description: 'Tasty pie',
+        description: 'Fresh apple pie',
     }
 ];
 
@@ -128,7 +128,7 @@ function DisplayMenu(menu) {
         
         menuItem.querySelector(`.menu-item-add`).addEventListener('click', () => {
             currentOrder.push(item);
-            DisplayOrder(currentOrder);
+            displayorder(currentOrder);
         });
 
         menuItem.querySelector(`.menu-item-remove`).addEventListener('click', () => {
@@ -138,13 +138,14 @@ function DisplayMenu(menu) {
             }), ...currentOrder.filter((orderItem) => {
                 return orderItem.id == item.id && orderItem.name == item.name && orderItem.price == item.price;
             }).slice(1)]
-            DisplayOrder(currentOrder);
+            displayorder(currentOrder);
         });
         menuContainer.appendChild(menuItem);
     });
 }
 
-function DisplayOrder(order) {
+function displayorder(order) 
+{
     let orderContainer = document.getElementById('order-container');
     orderContainer.innerHTML = '';
     let orderItems = [];
@@ -168,18 +169,198 @@ function DisplayOrder(order) {
         <div class="order-item-price">${item.price * item.count}$</div>`;
         orderContainer.appendChild(orderItem);
     });
+
+    if (order.length > 0)
+    {
+        let orderInfo = document.createElement('div');
+        orderInfo.className = 'order-info';
+        orderInfo.innerHTML = `
+        <button class="btn btn-outline-success order-button">Checkout</button>
+        `;
+        orderContainer.appendChild(orderInfo);
+
+        orderInfo.querySelector(`.order-button`).addEventListener('click', () => {
+            console.log(typeof displayModal);
+            displayModal(order);
+            /* Den første måde jeg gjorde det på
+            let orderNumber = document.getElementById('order-number');
+            currentIndex++;
+            totalSum += totalPrice(order);
+            displayTotalEarnings();
+            orderNumber.innerHTML = `Order #${currentIndex}`;
+            order = [];
+            currentOrder = [];
+            orderContainer.innerHTML = '';
+            orderContainer.appendChild(orderInfo);
+            displayorder(currentOrder);
+            */
+        });
+    }
 }
 
-function DisplayOrderNumber() 
+// Create a modal that displays the order with the total price and two buttons: Confirm and Cancel
+function displayModal(order) {
+    const modal = document.getElementById('modal');
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    let orderItems = [];
+    order.forEach((item) => {
+        let orderItem = orderItems.find((orderItem) => {
+            return orderItem.id == item.id && orderItem.name == item.name && orderItem.price == item.price;
+        });
+        if (orderItem) {
+            orderItem.count++;
+        }
+        else {
+            orderItems.push({id: item.id, name: item.name, price: item.price, count: 1});
+        }
+    });
+
+    modalContent.innerHTML = `
+        <div class="modal-header">
+            <h5 class="modal-title">Order #${currentIndex}</h5>
+            <button type="button" class="btn-close modal-close" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-order">
+                ${orderItems.map(item => `
+                    <div class="modal-order-item">
+                        <div class="modal-order-item-name">${item.name} x${item.count}</div>
+                        <div class="modal-order-item-price">${item.price * item.count}$</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="modal-order-total">Total: ${totalPrice(order)}$</div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger modal-cancel">Cancel</button>
+            <button type="button" class="btn btn-outline-success modal-confirm">Confirm</button>
+        </div>
+    `;
+
+    // Create a container div for modalContent
+    const modalContentDiv = document.createElement('div');
+    modalContentDiv.appendChild(modalContent);
+
+    // Append the container div to the modal
+    modal.innerHTML = '';
+    modal.appendChild(modalContentDiv);
+    modal.classList.add('show');
+    console.log("Modal shown");
+
+    // Event listeners
+    modal.querySelector('.modal-close').addEventListener('click', () => {
+        currentOrder = [];
+        modal.classList.remove('show');
+        displayorder(currentOrder);
+    });
+
+    modal.querySelector('.modal-cancel').addEventListener('click', () => {
+        currentOrder = [];
+        modal.classList.remove('show');
+        displayorder(currentOrder);
+    });
+
+    modal.querySelector('.modal-confirm').addEventListener('click', () => {
+        currentIndex++;
+        totalSum += totalPrice(order);
+        displayTotalEarnings();
+        displayorderNumber();
+        modal.classList.remove('show');
+        displayReceiptModal(order);
+    });
+}
+
+// Create a modal that displays the order with the total price and two buttons: Confirm and Cancel
+function displayReceiptModal(order) {
+    const modal = document.getElementById('modal');
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    let orderItems = [];
+    order.forEach((item) => {
+        let orderItem = orderItems.find((orderItem) => {
+            return orderItem.id == item.id && orderItem.name == item.name && orderItem.price == item.price;
+        });
+        if (orderItem) {
+            orderItem.count++;
+        }
+        else {
+            orderItems.push({id: item.id, name: item.name, price: item.price, count: 1});
+        }
+    });
+
+    modalContent.innerHTML = `
+        <div class="modal-header">
+            <h3 class="modal-title">Receipt</h3>
+            <h5 class="modal-title">Order #${currentIndex}</h5>
+            <button type="button" class="btn-close modal-close" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-order">
+                ${orderItems.map(item => `
+                    <div class="modal-order-item">
+                        <div class="modal-order-item-name">${item.name} x${item.count}</div>
+                        <div class="modal-order-item-price">${item.price * item.count}$</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="modal-order-total">Total: ${totalPrice(order)}$</div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-success modal-cancel">Close</button>
+            <p class="receipt-info">Thank you for your order!</p>
+            <p class="receipt-info">${new Date().toLocaleDateString()}</p>
+        </div>
+    `;
+
+    // Create a container div for modalContent
+    const modalContentDiv = document.createElement('div');
+    modalContentDiv.appendChild(modalContent);
+
+    // Append the container div to the modal
+    modal.innerHTML = '';
+    modal.appendChild(modalContentDiv);
+    modal.classList.add('show');
+    console.log("Modal shown");
+
+    // Event listeners
+    modal.querySelector('.modal-close').addEventListener('click', () => {
+        currentOrder = [];
+        modal.classList.remove('show');
+        displayorder(currentOrder);
+    });
+
+    modal.querySelector('.modal-cancel').addEventListener('click', () => {
+        currentOrder = [];
+        modal.classList.remove('show');
+        displayorder(currentOrder);
+    });
+}
+
+
+function displayorderNumber() 
 {
     let orderNumber = document.getElementById('order-number');
     orderNumber.innerHTML = `Order #${currentIndex}`;
+}
+
+function displayTotalEarnings()
+{
+    let totalEarnings = document.getElementById('total-earning');
+    totalEarnings.innerHTML = `Total earnings: ${totalSum}$`;
+
 }
 function DisplayItems() {
     DisplayMenu(Food);
     DisplayMenu(Drinks);
     DisplayMenu(Sides);
     DisplayMenu(Desserts);
+}
+
+function totalPrice(order) {
+    return order.reduce((total, item) => {
+        return total + item.price;
+    }, 0);
 }
 
 function GetMenuType(menu) 
@@ -200,4 +381,5 @@ function GetMenuType(menu)
 }
 
 DisplayItems();
-DisplayOrderNumber();
+displayorderNumber();
+displayTotalEarnings();
